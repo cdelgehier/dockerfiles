@@ -1,25 +1,35 @@
-byzanz
------
-
-Byzanz was once intended to be used as a GNOME 2 applet. Nowadays this feature
-is disabled because the way how applets work in GNOME 3 has changed
-fundamentally. However it is also possible to use byzanz as a command line tool
-- its real strength. It still has the same functionality but you won't see an
-icon in your systray or a program starting.
-
-EXAMPLES
+xrectsel
 ========
 
-# record the whole screen and save the output as an animated GIF
+A rectangle selection tool for X11. 
+![Demo](https://raw.githubusercontent.com/gvalkov/xrectsel/master/.demo.gif)
 
-    byzanz-record mydesktop.gif
+```
+Usage: xrectsel [-hfwsbg]
 
-# record the whole screen and audio input and save the output as OGG Theora
+Options:
+  -h, --help           show this help message and exit
+  -f, --format         output format (default: %x %y %w %h)
+  -g, --grab           grab the x11 server (may prevent tearing)
+  -w, --border-width   set border width (default: 1)
+  -s, --border-style   set border line style (default: solid)
+  -b, --border-color   set border color (default: white)
 
-    byzanz-record -a mydesktop.ogv
+Color Format:
+  hex: #7CFC00
+  rgb: 127,252,0
+  x11: Lawn Green
 
-# record only the top right quarter of your screen with 1680x1050 resolution
-# for 30 seconds, include the mouse cursor and audio and save the output as OGG
-# Theora
+Styles:
+  border-style: solid dash double-dash
 
-    byzanz-record -a -c -d 30 -x 840 -y 0 -w 840 -h 525 mydesktop.ogv
+Format Placeholders:
+  %x %X: offset from left/right of screen
+  %y %Y: offset from top/bottom of screen
+  %w %h: selection width/height
+
+Examples:
+  xrectsel -w 3 -b "Lawn Green"
+  xrectsel -f "%wx%h+%x+%y\n"
+  xrectsel | read x y width height
+```
