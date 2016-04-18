@@ -1,0 +1,52 @@
+# Global settings
+
+docker_stopped()
+{
+    local name=$1;
+    local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null);
+    if [[ "$state" == "false" ]]; then
+        docker rm $name;
+    fi
+}
+
+# APPS
+byzanz()
+{
+    docker_stopped byzanz;
+    mkdir $HOME/byzanz 2>/dev/null
+    xhost + > /dev/null;
+    docker run --rm -it \
+        --net=host \
+        -v /tmp/.X11-unix:/tmp/.X11-unix \
+        -v $HOME/byzanz:/home/user \
+        -e DISPLAY=unix$DISPLAY \
+        cdelgehier/byzanz "$@"
+}
+byzanz-window()
+{
+     # byzanz-window --duration=50 --delay=0 recording-$(date +%Y-%m-%d_%H-%M-%S).gif
+     byzanz $(xwininfo | awk '
+        /Absolute upper-left X/ { x = $4 }
+        /Absolute upper-left Y/ { y = $4 }
+        /Width/                 { w = $2 }
+        /Height/                { h = $2 }
+        END                     { print "-x", x, "-y", y, "-w", w, "-h", h }
+        ') -v "$@"
+}
+byzanz-region()
+{
+    # byzanz-region --duration=50 --delay=0 recording-$(date +%Y-%m-%d_%H-%M-%S).gif
+    byzanz $(xrectsel "--x=%x --y=%y --width=%w --height=%h") \
+        "$@"
+}
+
+xrectsel()
+{
+    # xrectsel -w 3 -b "Lawn Green"
+    xhost + > /dev/null;
+    docker run --rm -it \
+        --net=host \
+        -v /tmp/.X11-unix:/tmp/.X11-unix \
+        -e DISPLAY=unix$DISPLAY \
+	cdelgehier/xrectsel "$@"
+}
