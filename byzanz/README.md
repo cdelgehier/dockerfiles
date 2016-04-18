@@ -14,4 +14,5 @@ Byzanz was once intended to be used as a GNOME 2 applet. Nowadays this feature i
   **$> byzanz -a mydesktop.ogv**
 
  - record only the top right quarter of your screen with 1680x1050 resolution for 30 seconds, include the mouse cursor and audio and save the output as OGG Theora
+ 
  **$> byzanz -a -c -d 30 -x 840 -y 0 -w 840 -h 525 mydesktop.ogv**
