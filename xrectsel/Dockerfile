@@ -8,8 +8,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	autoconf automake build-essential git libx11-dev x11-utils ca-certificates
 
 WORKDIR /tmp
-RUN git clone https://github.com/lolilolicon/xrectsel.git \
-	&& cd xrectsel \
+RUN git clone https://github.com/lolilolicon/xrectsel.git 
+WORKDIR /tmp/xrectsel \
 	&& ./bootstrap \
 	&& ./configure --prefix /usr \
 	&& make \
