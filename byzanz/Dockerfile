@@ -6,14 +6,7 @@ MAINTAINER Cedric DELGEHIER <cedric.delgehier@laposte.net
 
 RUN apk update && apk upgrade && apk add \
 	git wget make automake autoconf gcc \
-	libtool libc-dev gtk+3.0-doc gtk+3.0-dev gst-plugins-base1-dev mesa-gl
-
-# automake
-#WORKDIR /tmp
-#RUN wget http://ftp.gnu.org/pub/gnu/automake/automake-1.15.tar.gz \
-#	&& tar -zxf automake-1.15.tar.gz \
-#	&& cd automake-1.15 \
-#	&& ./configure && make && make install
+	libtool libc-dev gtk+3.0-dev gst-plugins-base1-dev mesa-gl
 
 # gnome-common
 WORKDIR /tmp
