@@ -1,20 +1,18 @@
 # Build:
 #   docker build -t cdelgehier/xrectsel .
 #
-FROM debian:jessie
-MAINTAINER Cedric DELGEHIER <cedric.delgehier@laposte.net>
+FROM alpine:3.3
+MAINTAINER Cedric DELGEHIER <cedric.delgehier@laposte.net
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-	autoconf automake build-essential git libx11-dev x11-utils ca-certificates
+RUN apk update && apk upgrade && apk add \
+	git autoconf automake make gcc \
+	libc-dev libx11-dev  
 
-WORKDIR /tmp
-RUN git clone https://github.com/lolilolicon/xrectsel.git 
-WORKDIR /tmp/xrectsel 
-RUN ./bootstrap \
-	&& ./configure --prefix /usr \
-	&& make \
-	&& make DESTDIR="$directory" install
-
+# xrectsel
+WORKDIR /tmp/
+RUN git clone https://github.com/lolilolicon/xrectsel.git \
+	&& cd xrectsel \
+	&& ./bootstrap &&  ./configure --prefix=/usr && make && make install 
 
 CMD ["/usr/bin/xrectsel"]
 ENTRYPOINT ["/usr/bin/xrectsel"]
