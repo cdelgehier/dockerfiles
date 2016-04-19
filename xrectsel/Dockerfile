@@ -9,8 +9,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /tmp
 RUN git clone https://github.com/lolilolicon/xrectsel.git 
-WORKDIR /tmp/xrectsel \
-	&& ./bootstrap \
+WORKDIR /tmp/xrectsel 
+RUN ./bootstrap \
 	&& ./configure --prefix /usr \
 	&& make \
 	&& make DESTDIR="$directory" install
