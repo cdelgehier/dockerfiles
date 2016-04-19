@@ -1,4 +1,11 @@
+################
 # Global settings
+export REPO=cdelgehier
+
+docker_cleanup(){
+        docker rm $(docker ps --filter status=exited -q 2>/dev/null) 2>/dev/null
+        docker rmi $(docker images --filter=dangling -q 2>/dev/null) 2>/dev/null
+}
 
 docker_stopped()
 {
@@ -9,6 +16,20 @@ docker_stopped()
     fi
 }
 
+relies_on(){
+        local containers=$@
+
+        for container in $containers; do
+                local state=$(docker inspect --format "{{.State.Running}}" $container 2>/dev/null)
+
+                if [[ "$state" == "false" ]] || [[ "$state" == "" ]]; then
+                        echo "$container is not running, starting it for you."
+                        $container
+                fi
+        done
+}
+
+######
 # APPS
 byzanz()
 {
@@ -20,7 +41,7 @@ byzanz()
         -v /tmp/.X11-unix:/tmp/.X11-unix \
         -v $HOME/byzanz:/home/user \
         -e DISPLAY=unix$DISPLAY \
-        cdelgehier/byzanz "$@"
+        $REPO/byzanz "$@"
 }
 byzanz-window()
 {
@@ -40,6 +61,62 @@ byzanz-region()
         "$@"
 }
 
+chrome()
+{
+    docker_stopped chrome
+
+    docker run -d \
+        --memory 2gb \
+        --net host \
+        --cpuset-cpus 0\
+        -v /etc/localtime:/etc/localtime:ro \
+        -v /tmp/.X11-unix:/tmp/.X11-unix \
+        -e DISPLAY=unix$DISPLAY \
+        -v $HOME/Téléchargements:/root/Downloads \
+        -v $HOME/.chrome:/data \
+        -v $HOME/Images:/root/Pictures \
+        -e DISPLAY=unix$DISPLAY \
+        -e GDK_SCALE \
+        -e GDK_DPI_SCALE \
+        --device /dev/snd \
+        --device /dev/dri \
+	--device /dev/video0 \
+	--device /dev/usb \
+	--device /dev/bus/usb \
+	--group-add audio \
+	--group-add video \
+        --name chrome \
+        $REPO/chrome --user-data-dir=/data 
+
+}
+
+firefox()
+{
+    docker_stopped firefox
+
+    docker run -d \
+        --memory 2gb \
+	--net host \
+	--cpuset-cpus 0\
+        -v /etc/localtime:/etc/localtime:ro \
+        -v /tmp/.X11-unix:/tmp/.X11-unix \
+	-v /dev/shm:/dev/shm \
+        -e DISPLAY=unix$DISPLAY \
+        -v $HOME/Téléchargements:/root/Downloads \
+	-v $HOME/.firefox/cache:/root/.cache/mozilla \
+	-v $HOME/.firefox/mozilla:/root/.mozilla \
+	-v $HOME/Images:/root/Pictures \
+
+	-e DISPLAY=unix$DISPLAY \
+        -e GDK_SCALE \
+        -e GDK_DPI_SCALE \
+	--device /dev/snd \
+	--device /dev/dri \
+	--name firefox \
+	$REPO/firefox "$@"
+
+}
+
 xrectsel()
 {
     # xrectsel -w 3 -b "Lawn Green"
@@ -48,5 +125,7 @@ xrectsel()
         --net=host \
         -v /tmp/.X11-unix:/tmp/.X11-unix \
         -e DISPLAY=unix$DISPLAY \
-	cdelgehier/xrectsel "$@"
+	$REPO/xrectsel "$@"
 }
+
+
