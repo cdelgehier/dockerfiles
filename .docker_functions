@@ -39,7 +39,7 @@ byzanz()
     docker run --rm -it \
         --net=host \
         -v /tmp/.X11-unix:/tmp/.X11-unix \
-        -v $HOME/byzanz:/home/user \
+        -v $HOME/byzanz:/tmp/byzanz \
         -e DISPLAY=unix$DISPLAY \
         $REPO/byzanz "$@"
 }
