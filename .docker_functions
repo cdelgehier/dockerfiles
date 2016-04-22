@@ -2,9 +2,12 @@
 # Global settings
 export REPO=cdelgehier
 
+
+alias docker_exited='docker rm $(docker ps --filter status=exited -q 2>/dev/null) 2>/dev/null'
+alias docker_dangling='docker rmi $(docker images --filter=dangling -q 2>/dev/null) 2>/dev/null'
 docker_cleanup(){
-        docker rm $(docker ps --filter status=exited -q 2>/dev/null) 2>/dev/null
-        docker rmi $(docker images --filter=dangling -q 2>/dev/null) 2>/dev/null
+        docker_exited
+	docker_dangling
 }
 
 docker_stopped()
