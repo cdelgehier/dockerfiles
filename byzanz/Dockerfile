@@ -2,7 +2,7 @@
 #   docker build -t cdelgehier/byzanz .
 #
 FROM alpine:3.3
-MAINTAINER Cedric DELGEHIER <cedric.delgehier@laposte.net
+MAINTAINER Cedric DELGEHIER <cedric.delgehier@laposte.net>
 
 RUN apk add --update \
 	build-base \
