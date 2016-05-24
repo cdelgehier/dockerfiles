@@ -1,5 +1,5 @@
 # Build:
-#   docker build -t cdelgehier/byzanz .
+#   docker build -t cdelgehier/centos7 .
 #
 FROM centos:7
 MAINTAINER Cedric DELGEHIER <cedric.delgehier@laposte.net>
@@ -16,8 +16,6 @@ RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == system
     rm -f /lib/systemd/system/basic.target.wants/*;\
     rm -f /lib/systemd/system/anaconda.target.wants/* \
     && rm -f /etc/yum.repos.d/* \
-    && rpm -ivh "http://mirrors.atosworldline.com/private/centos/awl/7/main/x86_64/repositories-1.0-56.awl7.noarch.rpm" \
-    && rpm -ivh "http://mirrors.atosworldline.com/private/centos/awl/7/main/x86_64/repositories-centos-1.0-56.awl7.noarch.rpm" \
     && rm -f /etc/localtime \
     && ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime \
     && localedef -i fr_FR -f UTF-8 fr_FR.UTF-8 \
