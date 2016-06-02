@@ -1,1 +1,1 @@
-docker-compose  -d -f compose-marathon.yaml up
+docker-compose -f compose-marathon.yaml up -d
