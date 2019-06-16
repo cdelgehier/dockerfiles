@@ -14,7 +14,7 @@ RUN \
     rm -f /lib/systemd/system/basic.target.wants/*; \
     rm -f /lib/systemd/system/anaconda.target.wants/*; \
     apt update; \
-    apt install -y openssh-server iproute2 rsyslog sudo iputils-ping; \
+    apt install -y openssh-server iproute2 rsyslog sudo iputils-ping python-minimal; \
     : Can't log kernel messages unless we're privileged; \
     sed -i 's/^\(module(load="imklog")\)/#\1/' /etc/rsyslog.conf
 RUN yes y | ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N ''
